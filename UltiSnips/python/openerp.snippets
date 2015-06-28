@@ -1,0 +1,488 @@
+snippet __openerp__ "OpenErp Module Definition" b
+{
+    "name": "${1:name}",
+    "version": "0.1",
+    "author": "NaN·tic",
+    "category": "${2:category}",
+    "website": "http://www.nan-tic.com",
+    "description": """
+    ${3:This module provide:}
+    """,
+    "depends": [
+        '${4:base}',
+    ],
+    "init_xml": [],
+    "update_xml": [${5}
+    ],
+    "demo_xml": [],
+    "active": False,
+    "installable": True,
+}
+endsnippet
+
+snippet _columns "OpenErp Field definition Dict Model" b
+_columns = {
+    ${1}
+    }
+endsnippet
+
+snippet _constraints "OpenErp Constraints" b
+
+def ${1:_check_metho}(self, cr, uid, ids, context=None):
+    #TODO: check condition and return boolean accordingly
+    return True
+
+_constraints = [
+    ($1, '', ['${2:field_name}']),
+    ]
+endsnippet
+
+snippet _defaults "OpenErp defaults dict" b
+_defaults = {
+    '${1:datee}': ${2:lambda *a: time.strftime('%Y-%m-%d')},${3}
+    }
+endsnippet
+
+snippet _description  "_description" b
+_description = '${__doc__}' ${cr}
+endsnippet
+
+snippet _inherit "Openerp Inheritance type 1" b
+_inherit = '${1:openerpmodel}'
+#Do not touch _name it must be same as _inherit
+#_name = '${1:openerpmodel}' ${cr}
+endsnippet
+
+snippet _inherits  "_inherits" b
+_inherits = {'${1:openerpmodel}': '${2:model_id}'  ${cr} }
+endsnippet
+
+snippet _name  "_name" b
+_name = '${1:name}' ${cr}
+endsnippet
+
+snippet _order  "_order" b
+_order = '${1:id}' ${cr}
+endsnippet
+
+snippet _parent_store    "_parent_store" b
+_parent_store = ${1:False} ${cr}
+endsnippet
+
+snippet _rec_name "_rec_name" b
+_rec_name = '${1:name}' ${cr}
+endsnippet
+
+snippet _sql_constraints    "_sql_constraints" b
+_sql_constraints = [
+    ('${1:fieldname}_uniq', 'unique ($1)',
+            "The ${2:fieldLabel} of the ${3:OpenERPModel} must be unique"),
+    ]
+endsnippet
+
+snippet _table "_table" b
+_table = '${1:openerp_model}' ${cr}
+endsnippet
+
+snippet def_action_workflow  "def action_workflow" b
+def action_cancel(self, cr, uid, ids, *args):
+    #TODO: Business Process     return result ${cr}
+    result = True
+endsnippet
+
+snippet def_copy    "def copy" b
+def copy(self, cr, uid, id, default=None, context=None):
+    res_id = super(${1:ModelName}, self).copy(cr, uid, id, default, context)
+    return res_id ${cr}
+endsnippet
+
+snippet def_create    "def create" b
+def create(self, cr, uid, vals, context=None):
+    res_id = super(${1:ModelName}, self).create(cr, uid, vals, context)
+    return res_id ${cr}
+endsnippet
+
+snippet def_default_get    "def default_get" b
+def default_get(self, cr, uid, fields_list, context=None):
+    values = {}
+    ${cr}
+    return values
+endsnippet
+
+snippet def_fields_get    "def fields_get" b
+def fields_get(self, cr, uid, fields=None, context=None):
+    return super(${1:ModelName}, self).fields_get(cr, uid, fields, context, read_access)
+    ${cr}
+endsnippet
+
+snippet def_fields_view_get    "def fields_view_get" b
+def fields_view_get(self, cr, user, view_id=None, view_type='form', context=None, toolbar=False, submenu=False):
+    res = super(${1:ModelName}, self).fields_view_get(cr, uid, view_id, view_type, context, toolbar, submenu)
+    return res
+endsnippet
+
+snippet def_name_get    "def name_get" b
+def name_get(self, cr, uid, ids, context=None):
+    #TODO: search on name field or _res_name fields
+    #and make a result [(id, name), (id, name), ...]
+    res = self.read(cr, uid, ids, [self._rec_name], context, load='_classic_write')]
+    return res ${cr}
+endsnippet
+
+snippet def_name_search    "def name_search" b
+def name_search(self, cr, uid, name, args=None, operator='ilike', context=None, limit=80):
+    #TODO: make a search on specific fields and get ids
+     if not args:
+        args=[]
+    if not context:
+        context={}
+    ids = []
+    if name:
+        ids = self.search(cr, uid, [('code','ilike',name)]+ args, limit=limit)
+    if not ids:
+        ids = self.search(cr, uid, [('name',operator,name)]+ args, limit=limit)
+    self.name_get(cr, uid, ids, context=context)${cr}
+endsnippet
+
+snippet def_onchange    "def onchange" b
+def onchange_${1:fields}(self, cr, uid, ids, ${2:$1}, context=None):
+    #TODO: compute new values from the db/system
+    ${3}
+    return {
+        'value': {
+            'field_1': res1,
+            'field_2': res,
+            },
+        'domain': {
+            'field_3': [],
+            },
+        'warning': {
+            'title': _(""),
+            'message': _(""),
+        }}
+endsnippet
+
+snippet def_read    "def read" b
+def read(self, cr, uid, ids, fields=None, context=None, load='_classic_read'):
+    res = super(${1:ModelName}, self).read(cr, uid, ids, fields=fields, context=context, load=load)
+    #TODO: process on result
+    return res ${cr}
+endsnippet
+
+snippet def_search    "def search" b
+def search(self, cr, uid, args, offset=0, limit=None, order=None, context=None, count=False):
+    #TODO: process on args before search
+    res = super(${1:ModelName}, self).search(cr, uid, args, offset, limit, order, context, count)
+    #TODO: process
+endsnippet
+
+snippet def_unlink    "def unlink" b
+def unlink(self, cr, uid, ids, context=None):
+    #TODO: process before delete resource
+    res = super(${1:ModelName}, self).unlink(cr, uid, ids, context)
+    return res ${cr}
+endsnippet
+
+snippet def_write    "def write" b
+def write(self, cr, uid, ids, vals, context=None):
+    #TODO: process before updating resource
+    res = super(${1:ModelName}, self).write(cr, uid, ids, vals, context)
+    return res ${cr}
+endsnippet
+
+snippet field_attribute_domain    "Field Attribute: domain" b
+ domain=[('${1:state}','=','${2:done}'), ${cr}]
+endsnippet
+
+snippet field_attribute_help    "Field Attribute: help" b
+help='${1:HelpAboutField}', ${cr}
+endsnippet
+
+snippet field_attribute_ondelete    "Field Attribute: ondelete" b
+, ondelete="cascade"${cr}
+endsnippet
+
+snippet field_attribute_readonly    "Field Attribute: readonly" b
+readonly=True, ${cr}
+endsnippet
+
+snippet field_attribute_required    "Field Attribute: required" b
+required=True, ${cr}
+endsnippet
+
+snippet field_attribute_select    "Field Attribute: select" b
+select = True, ${cr}
+endsnippet
+
+snippet field_attribute_store    "Field Attribute: store" b
+store={
+    #TODO: define model and function call for store field
+    '${1:field_name}': (_get_invoice_from_line, None, 50),
+    }
+endsnippet
+
+snippet field_attribute_states    "Field States" b
+states={'${1:draft}':[('readonly',${2:False})${cr}]}
+endsnippet
+
+snippet fields.binary    "fields.binary" b
+'${1:file}': fields.binary('${2:Label}', filters=${3:None}), ${cr}
+endsnippet
+
+snippet fields.boolean    "fields.boolean" b
+'${1:field_name}': fields.boolean("${2:String}", required=${3:True}),
+endsnippet
+
+snippet fields.char    "fields.char" b
+'${1:name}': fields.char("${2:Label}", size=${3:64}, required=${4:False}, readonly=${5:False}),
+endsnippet
+
+snippet fields.date    "fields.date" b
+#TODO: import time required to get currect date
+'${1:d_ate}': fields.date('${2:Date}'), ${cr}
+endsnippet
+
+snippet fields.datetime    "fields.datetime" b
+#TODO: import time required to get currect datetime
+'${1:datetime}': fields.datetime('${2:Date}'), ${cr}
+endsnippet
+
+snippet fields.float    "fields.float" b
+#import decimal_precision as dp
+'${1:number}': fields.float('${2:Label}', digits_compute=dp.get_precision('${3:Account}')), ${cr}
+endsnippet
+
+snippet fields.function    "fields.function" b
+'${1:field_name}': fields.function(${2:_function_call}, method=True, type='${3:float}', string='${4:Label}', ${5:store=True}),
+endsnippet
+
+snippet def_calc_field  "Functional field method" b
+def ${1:_calc_field}(self, cr, uid, ids, fieldname, args, context=None):
+    ${2:res = {}.fromkeys(ids, 0.0)}
+    ${3}
+    ${4:return res}
+endsnippet
+
+snippet fields.integer    "fields.integer" b
+'${1:number}': fields.integer('${2:Label}') ${cr}
+endsnippet
+
+snippet fields.integer_big    "fields.integer_big" b
+'${1:number}': fields.integer_big('${2:Label}') ${cr}
+endsnippet
+
+snippet fields.many2many    "fields.many2many" b
+'${1:OtherObject}_ids': fields.many2many('${2:OpenerpModel}', '${3:ModuleName}_${4:FirstObject}_${5:SecondObject}_rel', '${6:ThisObject}_id', '${7:OtherObject}_id', '${8:Label}'), ${cr}
+endsnippet
+
+snippet fields.many2one    "fields.many2one" b
+'${1:data}_id': fields.many2one('${2:OpenerpModel}', "${3:Label}", required=${4:False}),${5}
+endsnippet
+
+snippet fields.one2many    "fields.one2many" b
+'${1:data}_ids': fields.one2many('${2:OpenerpModel}', '${3:field}_id', "${4:Label}", required=${5:False}),${6}
+endsnippet
+
+snippet fields.property    "fields.property" b
+'property_${1:name}': fields.property(
+    '${2:OpenerpModel}',
+    type='${3:many2one}',
+    relation='${4:openerpmodel}',
+    string='${5:Label}',
+    method=True,
+    view_load=True,
+    domain='[('${6:state}','=','${7:done}')]',
+    help="${8:Helpdescrip}"
+    required=${9:True}),
+endsnippet
+
+snippet fields.reference    "fields.reference" b
+'${1:ref}': fields.reference('${2:Document}',
+    selection=[
+    #TODO: define list of model and Label that will be work as a reference
+    ('account.account', 'Account'),
+    ${cr}     ], size=${3:128}),
+endsnippet
+
+snippet fields.related    "fields.related" b
+'${1:field}_id': fields.related('${2:relation_field}', '${3:field}_id', type='${4:many2one}', relation='${5:openerpmodel}', string=${6:Label}'), ${cr}
+endsnippet
+
+snippet fields.selection "fields.selection: [(draft, Draft)]" b
+'${1:state}':fields.selection([
+    ('draft','Draft'),
+    ('done','Done'),
+    ${cr} ],    '${2:State}', select=True, readonly=${3:True}),
+endsnippet
+
+snippet fields.selection_function "fields.selection [def _select_data]" b
+'${1:state}': fields.selection(${2:_get_states}, '${3:data}', required=${4:True}), ${cr}
+endsnippet
+
+snippet fields.text "fields.text" b
+'${1:note}': fields.text('${2:Description}'), ${cr}
+endsnippet
+
+snippet fields.time "fields.time" b
+#TODO: import time required to get currect time
+'${1:date}': fields.time('${2:Time}'), ${cr}
+endsnippet
+
+snippet log-netsvc "log netsvc" b
+netsvc.Logger().notifyChannel(self._name, netsvc.${1:LOG_DEBUG}, "${2:log_message}")${3}
+endsnippet
+
+snippet raise-except "OpenERP: raise osv.except_osv" b
+raise osv.except_osv(_("${1:Error title}"), _("${2:Error message}")${3: % {
+        ${4:'key': value,}
+        }})
+endsnippet
+
+snippet odef "New OpenERP Method" b
+def ${1:method_name}(self, cr, uid, ids):
+    result = None
+    #TODO: OpenERP Business Process
+    ${2}
+    return result
+endsnippet
+
+
+snippet oclass "OpenERP: model" b
+from osv import osv, fields
+
+
+class ${1:ClassName}(osv.osv):
+    _name = '${2:openerpmodel}'
+    _description = '${3:model_description}'
+
+    _columns = {
+        '${4:name}': fields.char('${5:data}', size=${6:64}, required=${7:True},
+                readonly=${8:False}),
+        ${9}
+        }
+
+$1()
+
+endsnippet
+
+
+snippet oinclass   "OpenERP: inherit model" b
+from osv import osv, fields
+
+
+class ${1:ClassName}(osv.osv):
+    _inherit = '${2:openerpmodel}'
+
+    _columns = {
+        ${3}
+        }
+
+$1()
+
+endsnippet
+
+
+snippet omemclass "OpenERP: Memory model" b
+from osv import osv, fields
+
+
+class ${1:ClassName}(osv.osv_memory):
+    _name = '${2:openerpmodel}'
+    _description = '${3:model_description}'
+
+    _columns = {
+        '${4:name}': fields.char('${5:data}', size=${6:64}, required=${7:True},
+                readonly=${8:False}),
+        ${9}
+        }
+
+$1()
+
+endsnippet
+
+
+snippet oinmemclass   "OpenERP: inherit memory model" b
+from osv import osv, fields
+
+
+class ${1:ClassName}(osv.osv_memory):
+    _inherit = '${2:openerpmodel}'
+
+    _columns = {
+        ${3}
+        }
+
+$1()
+
+endsnippet
+
+
+snippet owizard    "OpenERPwizard" b
+import wizard
+import pooler
+
+class ${1:SendEmail}(wizard.interface):
+     '''
+     OpenERP Wizard
+     '''
+     ${2:form} = '''
+            <?xml version="1.0"?>
+            <form string="Process Form">
+            <field name="${3:field}"/>
+            </form>  '''
+
+     ${4:fields} = {
+            '${5:field}': {'string': '${6:Label}', 'type': 'many2one', 'relation': 'res.company'},
+        }
+
+     def ${7:_get_defaults}(self, cr, uid, data, context):
+        #TODO: initlize required data
+        ${8:cr}
+        return data['form']
+
+     def ${9:_do_duplicate}(self, cr, uid, data, context):
+        pool = pooler.get_pool(cr.dbname)
+        return {}
+
+     states = {
+        'init': {
+            'actions': [${7}],
+            'result': {'type': 'form', 'arch': ${11:form}, 'fields': ${12:fields}, 'state': (('end', 'Cancel'), ('${13:process}', 'Process'))},
+        },
+        '${14:process}': {
+            'actions': [${9}],
+            'result': {'type': 'state', 'state': 'end'},
+        },
+    }
+${1}('${14:modelprocess}')
+endsnippet
+
+snippet wizard.state.end    "wizard state: end" b
+'${1:check}': {
+    'actions': [],
+    'result': {'type':'choice','next_state':self.${2:_check_condition}}
+    #TODO: define def ${2}(self, cr, uid, data, context):
+    },
+${cr}
+endsnippet
+
+snippet wiztad.state.choice    "wizard States: choice" b
+'${1check}': {
+    'actions': [],
+    'result': {'type':'choice','next_state':self.${2:_check_condition}}
+    #TODO: define def ${2}(self, cr, uid, data, context): }, ${cr}
+endsnippet
+
+snippet wizard.state.form  "wizard States: form" b
+'${1:form}': {
+    'actions': [],
+    'result': {'type': 'form', 'arch': form, 'fields': fields, 'state': (('end', 'Cancel'), ('process', 'Process'))},
+    }, ${cr}
+endsnippet
+
+snippet wizard.state.print  "wizard States: print" b
+'${1:report}':{
+    'actions': [],
+    'result': {'type':'print', 'report':'${2:modelreportname}', 'state':'${3:end}'}
+    }, ${cr}
+endsnippet
