@@ -1,4 +1,8 @@
-nippet super "super call"
+snippet import8 "odoo v8 import statements"
+from openerp import models, fields, api, _
+endsnippet
+
+snippet super "super call"
 super(${1:Class}, self).${2:__init__}($3${4:*args, }${5:**kwargs})
 endsnippet
 
@@ -20,6 +24,10 @@ endsnippet
 
 snippet utf8 "Insert UTF-8 coding string" !b
 # -*- coding: utf-8 -*-
+endsnippet
+
+snippet vim "vim line" !b
+# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
 endsnippet
 
 snippet ocreate "Odoo override create method." !b
